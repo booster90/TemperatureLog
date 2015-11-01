@@ -1,0 +1,98 @@
+body{
+    font-family: System; 
+}
+
+header{
+    font-family: Harlow Solid Italic; /*Brush Script MT*/ 
+    text-align: center;
+    height: 150px;
+    background: linear-gradient(#330066, #C45AEC, #FFFFFF); /*wykorzystanie gradientu 3 kolo*/
+    text-shadow: 5px 5px 20px #182019;
+    border-radius: 20px 20px 0px 0px;
+    font-size: 30px;
+    color: #ffffff;
+}
+
+footer{
+    position: relative;
+    color: #ffffff;
+    margin: 50px 0px 0px 0px;
+    text-align: center;
+    height:100px;
+    background: linear-gradient(#FFFFFF, #C45AEC, #330066);
+    border-radius: 0px 0px 20px 20px;
+    font-size: 15px;
+}
+
+#zawartosc {
+    width: 960px;
+    margin: 200px 0px 0px 0px;
+}
+
+/*menu rozwijane */
+
+#kontener {
+    width: 960px;
+    margin: 0 auto;
+}
+
+#menu {	
+
+    display: table; 
+    padding: 0 10px 0; 
+    margin: -100px auto; 
+    overflow: hidden; 
+    font-size: 14px; 
+    background: #C45AEC; /*kolor zewn�trznego menu*/
+    border-radius: 10px 0px 10px 0px;
+
+}
+
+#menu li {
+
+    list-style-type: none; 
+    margin: 0 auto; 
+    float: left; 
+}
+
+#menu li:hover {
+    background: #330066;
+}
+
+#menu li a {
+    display: block; 
+    color: #ffffff; 
+    text-decoration: none; 
+    padding: 7px 10px 7px;
+}
+
+#menu li a:hover {
+    background: #C45AEC; /*kolor po najechaniu kursorem*/
+    color: white;
+}
+#menu li li a {
+    width: 160px;
+}
+
+#menu li ul {
+    overflow: hidden;
+    display: none;
+    background: #330066;
+}
+
+#menu li:hover ul {position: absolute; padding: 0; display: block; width: 160px;}
+no jak 
+/*ANIMACJA - tylko CSS3*/
+#menu *:hover {transition: 0.3s ease-in;}
+
+#menu li ul {
+    border-radius: 0 0 10px 10px;
+}
+
+.center{
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+    //margin-left: auto !important;
+    //margin-right: auto !important;
+}

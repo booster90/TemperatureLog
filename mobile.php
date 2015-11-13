@@ -1,7 +1,8 @@
-<?php
+<?php    
+include "class/classTempJson.php";
 
-include "classTempJson.php";
-
-$foo = new classTempJson();
+    $foo = new classTempJson();
+    
+    $foo->getMobileTemperature();
 ?>
 

@@ -21,11 +21,14 @@ class makeArrayJsChart {
         
         $this->tempData[4];
         
-        $dupa = '[';
         //tworzymy tablice z temperatura..
         foreach ($temp as $value) {
             foreach ($value as $key => $value) {
                 //$key;
+                if($value==NULL || $value==''|| $value==' '){
+                    $value=1;
+                }
+                
                 if($key=='06'){
                    $this->tempData[0]=$value; 
                 }
@@ -45,22 +48,22 @@ class makeArrayJsChart {
                     $this->tempData[5]=$value; 
                 }
                 if($key=='13'){
-                    $this->tempData[6]=$value; 
+                    $this->tempData[6]=$value;
                 } 
-                if($key=='14'){
+                if($key==14){
                     $this->tempData[7]=$value; 
                 } 
-                if($key=='15'){
+                if($key==15){
                     $this->tempData[8]=$value; 
                 } 
-                if($key=='16'){
+                if($key==16){
                     $this->tempData[9]=$value; 
                 }
-                if($key=='17'){
+                if($key==17){
                     $this->tempData[10]=$value; 
                 }
                 if($key=='18'){
-                    $this->tempData[11]=$value; 
+                    $this->tempData[11]=$value;
                 }
                 if($key=='19'){
                     $this->tempData[12]=$value; 
@@ -77,10 +80,10 @@ class makeArrayJsChart {
                 if($key=='23'){
                     $this->tempData[16]=$value; 
                 }
-                if($key=='24'){
+                if($key=='00'){
                     $this->tempData[17]=$value; 
-                    //$dupa .= $value.',';        
-                }   
+                    //$dupa .= $value.',';  
+                }
             }
         }
         

@@ -13,76 +13,28 @@
         <!-- lib chart-->
         <script src="/libs/Chart.js/Chart.js"></script>
 
-        <?php
-        include "classTempDB.php";
-        include "classTempPomiar.php";
-        include "makeArrayJsChart.php";
+        <?php 
+        //dla sqlite
+        include "class/tempSQLite.class.php";
+        include "class/makeArrayJsChart.php";
         
-        $ostatniPomiar = new TempPomiar();
-
-        // pobieramy dane z obiektu ostatniPomiar
-        $d = $ostatniPomiar->getData();
-        $c = $ostatniPomiar->getGodz();
-        $t = $ostatniPomiar->getTemp();
-        $avg = $ostatniPomiar->getAvg();
-        $todayAvg = $ostatniPomiar->getAvgToday();
+        $temp = new Temperature();
         
-        $obiektBazyDanych = new TempDB();
-        if (!$obiektBazyDanych) {
-            echo $obiektBazyDanych->lastErrorMsg();
-        } else {
-            //udalo sie otworzyć baze danych.
-        }
-
-//$sql = 'SELECT * FROM temp WHERE godz > 6 & godz < 24 & data='.date("Y-m-d").' ORDER BY id DESC LIMIT 24;';
-//tutaj aktualne bez pierdzielenia sie w zapytaniu
-        $sql = "SELECT * FROM temp WHERE data=date('now') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
-        $ret = $obiektBazyDanych->query($sql);
-        
-        
-        $today=array();
-        
-        //if date_now!=row['date']; to nie rysuj
-        while ($row = $ret->fetchArray(SQLITE3_ASSOC)) {
-               
-            $today[] = array( substr($row['godz'], 0, 2) => $row['temp'] );
-            //array_push( $araj, $temp );
-        }
-        
-        $test = new makeArrayJsChart($today);
+        //podejscie obiektowe uzywamy metod z klasy ktora napisalem
+        $sql_dzis = "SELECT * FROM temp WHERE data=date('now') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
+        $dzis = new makeArrayJsChart( $temp->makeArraySurvey($sql_dzis) );
     
-        //i wczoraj
+        //z wczoraj
         $sql_wczoraj = "SELECT * FROM temp WHERE data=date('now','-1 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
-        $ret2 = $obiektBazyDanych->query($sql_wczoraj);
-        
-        $yesterday = array();
-        
-        //if date_now!=row['date']; to nie rysuj
-        while ($row2 = $ret2->fetchArray(SQLITE3_ASSOC)) {
-            $yesterday[] = array( substr($row2['godz'], 0, 2) => $row2['temp'] );
-        }
-        
-        $test2 = new makeArrayJsChart($yesterday);
+        $wczoraj = new makeArrayJsChart( $temp->makeArraySurvey($sql_wczoraj) );
 
-        //i wczoraj
+        //i przedwczoraj
         $sql_przedWczoraj = "SELECT * FROM temp WHERE data=date('now','-2 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
-        $ret3 = $obiektBazyDanych->query($sql_przedWczoraj);
-        
-        $twoDayAgo = array();
-        
-        while ($row3 = $ret3->fetchArray(SQLITE3_ASSOC)) {
-            $twoDayAgo[] = array( substr($row3['godz'], 0, 2) => $row3['temp'] );           
-        }
-        $test3 = new makeArrayJsChart($twoDayAgo);
-        
-        $obiektBazyDanych->close();
-        
+        $przedwczoraj = new makeArrayJsChart( $temp->makeArraySurvey($sql_przedWczoraj) );
         ?>
-
+        
         <!-- skrypt JS-->
-
-        <script type="text/javascript">
-            
+        <script type="text/javascript">    
             //kolejne wykresy w chart.js
             var lineChartData = {
                 labels: ['6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00'],
@@ -95,7 +47,7 @@
                         pointStrokeColor: "#fff",
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(220,220,220,1)",
-                        data: <?php echo $test->get(); ?>
+                        data: <?php echo $dzis->get(); ?>
                     }
                 ]
             }
@@ -111,7 +63,7 @@
                         pointStrokeColor: "#fff",
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(151,187,205,1)",
-                        data: <?php echo $test2->get(); ?>
+                        data: <?php echo $wczoraj->get(); ?>
                       }
                 ]
             }
@@ -127,7 +79,7 @@
                         pointStrokeColor: "#fff",
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(151,187,205,1)",
-                        data: <?php echo $test3->get(); ?>
+                        data: <?php echo $przedwczoraj->get(); ?>
                     }
                 ]
             }
@@ -163,7 +115,7 @@
         </nav>
 
         <div id="zawartosc"></div>
-        <?php echo "<p class='center'>Ostatni pomiar wykonano: " . $d . " o godzinie " . $c . " i wynosił " . $t . " C  przy średniej temperaturze dziś ".substr($todayAvg,0,5)." C oraz globalnej".substr($avg,0,5)." C</p>"; ?>
+        <p class='center'><?php echo $temp->getLastSurvey(); echo "przy średniej temperaturze dziś ".substr($temp->getAvgToday(),0,5)." &deg;C oraz globalnej ".substr($temp->getAvg(),0,5)." &deg;C</p>"; ?>
         <div class="center">
             <canvas id="wykresDzis" width="600" height="200"></canvas>
         </div>

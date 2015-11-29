@@ -21,16 +21,23 @@
         $temp = new Temperature();
         
         //podejscie obiektowe uzywamy metod z klasy ktora napisalem
-        $sql_dzis = "SELECT * FROM temp WHERE data=date('now') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
+        $sql_dzis = "SELECT * FROM sensor_1 WHERE data=date('now') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
+        $sql_dzis_piec = "SELECT * FROM sensor_2 WHERE data=date('now') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
         $dzis = new makeArrayJsChart( $temp->makeArraySurvey($sql_dzis) );
-    
+        $dzis_piec = new makeArrayJsChart($temp->makeArraySurvey($sql_dzis_piec));
+        
         //z wczoraj
-        $sql_wczoraj = "SELECT * FROM temp WHERE data=date('now','-1 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
+        $sql_wczoraj = "SELECT * FROM sensor_1 WHERE data=date('now','-1 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
+        $sql_wczoraj_piec = "SELECT * FROM sensor_2 WHERE data=date('now','-1 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";        
         $wczoraj = new makeArrayJsChart( $temp->makeArraySurvey($sql_wczoraj) );
+        $wczoraj_piec = new makeArrayJsChart( $temp->makeArraySurvey($sql_wczoraj_piec) );
 
         //i przedwczoraj
-        $sql_przedWczoraj = "SELECT * FROM temp WHERE data=date('now','-2 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
+        $sql_przedWczoraj = "SELECT * FROM sensor_1 WHERE data=date('now','-2 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
+        $sql_przedWczoraj_piec = "SELECT * FROM sensor_2 WHERE data=date('now','-2 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
+        
         $przedwczoraj = new makeArrayJsChart( $temp->makeArraySurvey($sql_przedWczoraj) );
+        $przedwczoraj_piec = new makeArrayJsChart( $temp->makeArraySurvey($sql_przedWczoraj_piec) );
         ?>
         
         <!-- skrypt JS-->
@@ -41,13 +48,24 @@
                 datasets: [
                     {
                         label: "Pomiar czujnik nr 1 raspberry",
-                        fillColor: "rgba(220,220,220,0.2)",
-                        strokeColor: "rgba(220,220,220,1)",
-                        pointColor: "rgba(220,220,220,1)",
+                        fillColor: "rgba(38, 255, 17, 0.8)",
+                        strokeColor: "rgba(38, 255, 17,1)",
+                        pointColor: "rgba(38, 255, 17,1)",
                         pointStrokeColor: "#fff",
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(220,220,220,1)",
                         data: <?php echo $dzis->get(); ?>
+                    },
+                    
+                    {
+                        label: "Pomiar czujnik nr 2 raspberry",
+                        fillColor: "rgba(244, 15, 10, 0.3)",
+                        strokeColor: "rgba(244, 15, 10,1)",
+                        pointColor: "rgba(244, 15, 10,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(151,187,205,1)",
+                        data: <?php echo $dzis_piec->get(); ?>
                     }
                 ]
             }
@@ -64,7 +82,18 @@
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(151,187,205,1)",
                         data: <?php echo $wczoraj->get(); ?>
-                      }
+                      },
+                    
+                    {
+                        label: "Pomiar czujnik nr 2 raspberry",
+                        fillColor: "rgba(110,110,110,0.2)",
+                        strokeColor: "rgba(110,110,110,1)",
+                        pointColor: "rgba(110,110,110,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(110,110,110,1)",
+                        data: <?php echo $wczoraj_piec->get(); ?>
+                    }
                 ]
             }
             
@@ -80,6 +109,17 @@
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(151,187,205,1)",
                         data: <?php echo $przedwczoraj->get(); ?>
+                    },
+                    
+                    {
+                        label: "Pomiar czujnik nr 2 raspberry",
+                        fillColor: "rgba(110,110,110,0.2)",
+                        strokeColor: "rgba(110,110,110,1)",
+                        pointColor: "rgba(110,110,110,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(110,110,110,1)",
+                        data: <?php echo $przedwczoraj_piec->get(); ?>
                     }
                 ]
             }
@@ -130,7 +170,7 @@
             <canvas id="wykresPrzedWczoraj" width="600" height="200"></canvas>
         </div>
         <footer>
-            <?php include "../include/footer.php"; ?>
+            <?php include "../include/footer.php";?>
         </footer>
     </body>
 </html>

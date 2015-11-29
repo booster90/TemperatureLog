@@ -23,7 +23,7 @@ class Temperature extends SQLite3 {
      *      *..   
      */
     function __construct() {
-        $this->open('temp.db');
+        $this->open('temp_test.db');
     }
 
     /**
@@ -56,7 +56,7 @@ class Temperature extends SQLite3 {
      */
     function getLastSurvey() {
         $sql = 'SELECT * FROM temp ORDER BY id DESC LIMIT 1';
-
+        
         $obj = $this->query($sql);
         while ($row = $obj->fetchArray(SQLITE3_ASSOC)) {
             $this->data = $row['data'];

@@ -1,0 +1,31 @@
+/*
+ Theme Name: Szablon km
+ Theme URI: 
+ Author: Krystian Mikołajczyk
+ Author URI: http://krystianm.pl/
+ Description: Skórka dla mojej strony stworzona przy pomocy bootstrapa.
+ Version: 1.0
+
+ This theme, like WordPress, is licensed under the GPL.
+ Use it to make something cool, have fun, and share what you've learned with others.
+*/
+dupa{
+    a:link {
+        text-decoration: none;
+    }
+
+    a:visited {
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
+
+    a:active {
+        text-decoration: none;
+        color: black;
+    }
+
+
+}

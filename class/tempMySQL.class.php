@@ -1,12 +1,11 @@
 <?php
-
 /*
  * 
- * klasa obslugi i parsowania danych z bazy sqlite
+ * klasa obslugi i parsowania danych z bazy mysql
  */
 
 class TempMySQL extends mysqli {
-    
+
     //dane polaczenia 
     private $host = "localhost";
     private $user = 'root';
@@ -17,16 +16,20 @@ class TempMySQL extends mysqli {
     private $data = "";
     private $czas = "";
     private $temp = "";
+    
     private $avg = "";
     private $avg_today = "";
-
+    
     //konstruktor ze sciezka do bazy..
     function __construct() {
-        $link = mysql_connect( $this->host, $this->user, $this->password) or die('Could not connect to server.' );
-        mysql_select_db($this->database, $link) or die('Could not select database.');
-        
+        /*
+        $conn = new mysqli($this->host, $this->user, $this->password, $this->database);
+        if ($this->conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        $conn->close();*/
     }
-    
+
     /**
      * 
      * Przygotuj pomiar z dzis jako tablice..
@@ -36,8 +39,8 @@ class TempMySQL extends mysqli {
     function makeArraySurvey($sql) {
         //$sql = "SELECT * FROM temp WHERE data=date('now') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
         //SATANIZE THIS KURWA
-        
-        $ret = $this->query($sql);
+
+        $ret = $conn->query($sql);
 
         $today = array();
 
@@ -46,7 +49,7 @@ class TempMySQL extends mysqli {
             $today[] = array(substr($row['godz'], 0, 2) => $row['temp']);
             //array_push( $araj, $temp );
         }
-        
+
         return $today;
     }
 
@@ -57,15 +60,26 @@ class TempMySQL extends mysqli {
      * @return type string
      */
     function getLastSurvey() {
-        $sql = 'SELECT * FROM temp ORDER BY id DESC LIMIT 1';
-
-        $obj = $this->query($sql);
-        while ($row = $obj->fetchArray(MYSQLI_ASSOC)) {
-            $this->data = $row['data'];
-            $this->czas = $row['godz'];
-            $this->temp = $row['temp'];
+        
+        $conn = new mysqli($this->host, $this->user, $this->password, $this->database);
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
         }
-        return 'Ostatni pomiar wynosił: ' . $this->temp . ' &deg;C data: ' . $this->data . ' o godzinie ' . $this->czas . ' ';
+        
+        $sql = "SELECT * FROM sensor_2 ORDER BY id DESC LIMIT 1";
+        
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while ($row = $result->fetch_assoc()) {
+                $this->data = $row['data'];
+                $this->czas = $row['godz'];
+                $this->temp = $row['temp'];
+                $this->date_db = $row["data_from_db"];
+            }
+        }
+        $conn->close();
+            return 'Ostatni pomiar wynosił: ' . $this->temp . ' &deg;C data: ' . $this->data . ' o godzinie ' . $this->czas . ' ';
     }
 
     /**
@@ -75,7 +89,16 @@ class TempMySQL extends mysqli {
      * @return type string -> temperatura srednia
      */
     function getAvg() {
-        $this->avg = $this->querySingle('SELECT avg(temp) FROM temp;');
+        
+        $conn = new mysqli($this->host, $this->user, $this->password, $this->database);
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        
+        $sql = 'SELECT avg(temp) FROM sensor_2';
+        $this->avg = $conn->query($sql);
+        $conn->close();
+        
         return $this->avg;
     }
 

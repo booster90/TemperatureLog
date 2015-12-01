@@ -23,7 +23,7 @@ class Temperature extends SQLite3 {
      *      *..   
      */
     function __construct() {
-        $this->open('temp_test.db');
+        $this->open('temperature_sensor.db');
     }
 
     /**
@@ -55,7 +55,7 @@ class Temperature extends SQLite3 {
      * @return type string
      */
     function getLastSurvey() {
-        $sql = 'SELECT * FROM temp ORDER BY id DESC LIMIT 1';
+        $sql = 'SELECT * FROM sensor_1 ORDER BY id DESC LIMIT 1';
         
         $obj = $this->query($sql);
         while ($row = $obj->fetchArray(SQLITE3_ASSOC)) {
@@ -81,7 +81,7 @@ class Temperature extends SQLite3 {
      * @return type array
      */
     function getTodayData() {   
-        $sql = "SELECT * FROM temp WHERE data=date('now') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
+        $sql = "SELECT * FROM sensor_1 WHERE data=date('now') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
         $todayDataArr=Array();
         
         $obj = $this->query($sql);
@@ -106,7 +106,7 @@ class Temperature extends SQLite3 {
      * @return type string -> temperatura srednia
      */
     function getAvg() {
-        $this->avg = $this->querySingle('SELECT avg(temp) FROM temp;');
+        $this->avg = $this->querySingle('SELECT avg(temp) FROM sensor_1;');
         return $this->avg;
     }
 
@@ -117,7 +117,7 @@ class Temperature extends SQLite3 {
      * @return type string
      */
     function getAvgToday() {
-        $this->avg_today = $this->querySingle('SELECT avg(temp) FROM temp WHERE data=date("now");');
+        $this->avg_today = $this->querySingle('SELECT avg(temp) FROM sensor_1 WHERE data=date("now");');
         return $this->avg_today;
     }
 

@@ -1,9 +1,10 @@
 <?php    
+    /*
+     * 
+     * dla apki mobilnej polaczenie..
+     */
+    include "class/classTempJson.class.php";
 
-    include "../class/classTempJson.php";
-
-    $foo = new classTempJson();
+    $foo = new TempJson();
     $foo->getMobileTemperature();
-
-    ?>
-
+    

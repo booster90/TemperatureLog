@@ -1,5 +1,5 @@
 <?php
-include "tempSQLite.class.php";
+include "class/tempSQLite.class.php";
 /**
  * 
  * jsonuje dane by ich uzyc pozniej w apce mobilnej..
@@ -8,14 +8,13 @@ include "tempSQLite.class.php";
 class TempJson {
     
     private $data;
-
     /**
      * konstruktor
      * 
      */
     function __construct() { 
         $db = new Temperature();
-        $this->data = $db->getTodayData();   
+        $this->data = $db->getTodayData();  
     }
     
     /*

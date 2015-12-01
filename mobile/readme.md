@@ -1,14 +1,9 @@
-ver. 1.0
+ver. 0.1.1
 --------------------------------------------------------------------------------
-* dodałem obsługe kolejnego czujnika
-* poprawiona wersja mobilna
-
-to do:
-* obsluga wielu czujnikow(niech sprawdza w bazie)
-* blad z godzina 24
-* ..
+* obsluga 1 czujnika
+* poprawki bledow..
 --------------------------------------------------------------------------------
-POMIAR TEMPERATURY WEB.
+POMIAR TEMPERATURY WEB - MOBILNA WERSJA.
 
 Aplikacja prezentujaca wyniki pomiarów z czujników ds1820 podłączonych do
 platformy raspberry. Czujnik podłączony jest poprzed I2C (GPIO raspberry), 
@@ -33,7 +28,7 @@ Technologie:
     PHP
     SQLite
     biblioteka chart.js
-    
+
 
 --------------------------------------------------------------------------------
 http://krystianm.pl/

@@ -47,8 +47,8 @@
                 labels: ['6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00'],
                 datasets: [
                     {
-                        label: "Pomiar czujnik nr 1 raspberry",
-                        fillColor: "rgba(38, 255, 17, 0.8)",
+                        label: "Pomiar czujnik nr 1 pokój",
+                        fillColor: "rgba(38, 255, 17, 0.4)",
                         strokeColor: "rgba(38, 255, 17,1)",
                         pointColor: "rgba(38, 255, 17,1)",
                         pointStrokeColor: "#fff",
@@ -58,8 +58,8 @@
                     },
                     
                     {
-                        label: "Pomiar czujnik nr 2 raspberry",
-                        fillColor: "rgba(244, 15, 10, 0.3)",
+                        label: "Pomiar czujnik nr 2 układ CO",
+                        fillColor: "rgba(244, 15, 10, 0.1)",
                         strokeColor: "rgba(244, 15, 10,1)",
                         pointColor: "rgba(244, 15, 10,1)",
                         pointStrokeColor: "#fff",

@@ -30,13 +30,12 @@ footer{
 }
 
 /*menu rozwijane */
-
 #kontener {
     width: 960px;
     margin: 0 auto;
 }
 
-#menu {	
+#menu { 
 
     display: table; 
     padding: 0 10px 0; 
@@ -48,8 +47,7 @@ footer{
 
 }
 
-#menu li {
-
+#menu li {    
     list-style-type: none; 
     margin: 0 auto; 
     float: left; 

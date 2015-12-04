@@ -1,3 +1,12 @@
+ver. 1.0.1
+--------------------------------------------------------------------------------
+* dodana obsługa czujnika nr 3
+
+to do:
+* obsluga wielu czujnikow(niech sprawdza w bazie)
+* blad z godzina 24
+* ..
+
 ver. 1.0
 --------------------------------------------------------------------------------
 * dodałem obsługe kolejnego czujnika

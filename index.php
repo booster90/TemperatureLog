@@ -22,21 +22,30 @@
         
         //podejscie obiektowe uzywamy metod z klasy ktora napisalem
         $sql_dzis = "SELECT * FROM sensor_1 WHERE data=date('now') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
-        $sql_dzis_piec = "SELECT * FROM sensor_2 WHERE data=date('now') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
+        $sql_dzis_zewn = "SELECT * FROM sensor_2 WHERE data=date('now') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
+        $sql_dzis_piec = "SELECT * FROM sensor_3 WHERE data=date('now') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
+
+        //tworzymy dane pod wykres
         $dzis = new makeArrayJsChart( $temp->makeArraySurvey($sql_dzis) );
+        $dzis_zewn = new makeArrayJsChart($temp->makeArraySurvey($sql_dzis_zewn));
         $dzis_piec = new makeArrayJsChart($temp->makeArraySurvey($sql_dzis_piec));
         
         //z wczoraj
         $sql_wczoraj = "SELECT * FROM sensor_1 WHERE data=date('now','-1 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
-        $sql_wczoraj_piec = "SELECT * FROM sensor_2 WHERE data=date('now','-1 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";        
+        $sql_wczoraj_zewn = "SELECT * FROM sensor_2 WHERE data=date('now','-1 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
+        $sql_wczoraj_piec = "SELECT * FROM sensor_3 WHERE data=date('now','-1 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";        
+        
         $wczoraj = new makeArrayJsChart( $temp->makeArraySurvey($sql_wczoraj) );
+        $wczoraj_zewn = new makeArrayJsChart($temp->makeArraySurvey($sql_wczoraj_zewn) );
         $wczoraj_piec = new makeArrayJsChart( $temp->makeArraySurvey($sql_wczoraj_piec) );
 
         //i przedwczoraj
         $sql_przedWczoraj = "SELECT * FROM sensor_1 WHERE data=date('now','-2 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
-        $sql_przedWczoraj_piec = "SELECT * FROM sensor_2 WHERE data=date('now','-2 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
+        $sql_przedWczoraj_zewn = "SELECT * FROM sensor_2 WHERE data=date('now','-2 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
+        $sql_przedWczoraj_piec = "SELECT * FROM sensor_3 WHERE data=date('now','-2 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
         
         $przedwczoraj = new makeArrayJsChart( $temp->makeArraySurvey($sql_przedWczoraj) );
+        $przedwczoraj_zewn = new makeArrayJsChart($temp->makeArraySurvey($sql_przedWczoraj_zewn));
         $przedwczoraj_piec = new makeArrayJsChart( $temp->makeArraySurvey($sql_przedWczoraj_piec) );
         ?>
         
@@ -59,13 +68,23 @@
                     
                     {
                         label: "Pomiar czujnik nr 2 układ CO",
-                        fillColor: "rgba(244, 15, 10, 0.1)",
+                        fillColor: "rgba(244, 15, 10, 0.2)",
                         strokeColor: "rgba(244, 15, 10,1)",
                         pointColor: "rgba(244, 15, 10,1)",
                         pointStrokeColor: "#fff",
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(151,187,205,1)",
                         data: <?php echo $dzis_piec->get(); ?>
+                    },
+                            {
+                        label: "Pomiar czujnik nr 3 zewnatrz",
+                        fillColor: " rgba(215, 44, 245, 0.4)",
+                        strokeColor: "rgba(215, 44, 245, 1)",
+                        pointColor: "rgba(215, 44, 245, 1);",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(151,187,205,1)",
+                        data: <?php echo $dzis_zewn->get(); ?>
                     }
                 ]
             }
@@ -74,25 +93,35 @@
                 labels: ['6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00'],
                 datasets: [
                     {
-                        label: "My Second dataset",
-                        fillColor: "rgba(151,187,205,0.2)",
-                        strokeColor: "rgba(151,187,205,1)",
-                        pointColor: "rgba(151,187,205,1)",
+                        label: "Pomiar czujnik nr 1 pokój",
+                        fillColor: "rgba(38, 255, 17, 0.4)",
+                        strokeColor: "rgba(38, 255, 17,1)",
+                        pointColor: "rgba(38, 255, 17,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        data: <?php echo $wczoraj->get(); ?>
+                    },
+                    
+                    {
+                        label: "Pomiar czujnik nr 2 układ CO",
+                        fillColor: "rgba(244, 15, 10, 0.2)",
+                        strokeColor: "rgba(244, 15, 10,1)",
+                        pointColor: "rgba(244, 15, 10,1)",
                         pointStrokeColor: "#fff",
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(151,187,205,1)",
-                        data: <?php echo $wczoraj->get(); ?>
-                      },
-                    
-                    {
-                        label: "Pomiar czujnik nr 2 raspberry",
-                        fillColor: "rgba(110,110,110,0.2)",
-                        strokeColor: "rgba(110,110,110,1)",
-                        pointColor: "rgba(110,110,110,1)",
+                        data: <?php echo $wczoraj_piec->get(); ?>
+                    },
+                            {
+                        label: "Pomiar czujnik nr 3 zewnatrz",
+                        fillColor: " rgba(215, 44, 245, 0.4)",
+                        strokeColor: "rgba(215, 44, 245, 1)",
+                        pointColor: "rgba(215, 44, 245, 1);",
                         pointStrokeColor: "#fff",
                         pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(110,110,110,1)",
-                        data: <?php echo $wczoraj_piec->get(); ?>
+                        pointHighlightStroke: "rgba(151,187,205,1)",
+                        data: <?php echo $wczoraj_zewn->get(); ?>
                     }
                 ]
             }
@@ -101,25 +130,35 @@
                 labels: ['6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00'],
                 datasets: [
                     {
-                        label: "My Second dataset",
-                        fillColor: "rgba(181,217,205,0.2)",
-                        strokeColor: "rgba(181,217,205,1)",
-                        pointColor: "rgba(1581,217,205,1)",
+                        label: "Pomiar czujnik nr 1 pokój",
+                        fillColor: "rgba(38, 255, 17, 0.4)",
+                        strokeColor: "rgba(38, 255, 17,1)",
+                        pointColor: "rgba(38, 255, 17,1)",
                         pointStrokeColor: "#fff",
                         pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(151,187,205,1)",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
                         data: <?php echo $przedwczoraj->get(); ?>
                     },
                     
                     {
-                        label: "Pomiar czujnik nr 2 raspberry",
-                        fillColor: "rgba(110,110,110,0.2)",
-                        strokeColor: "rgba(110,110,110,1)",
-                        pointColor: "rgba(110,110,110,1)",
+                        label: "Pomiar czujnik nr 2 układ CO",
+                        fillColor: "rgba(244, 15, 10, 0.2)",
+                        strokeColor: "rgba(244, 15, 10,1)",
+                        pointColor: "rgba(244, 15, 10,1)",
                         pointStrokeColor: "#fff",
                         pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(110,110,110,1)",
+                        pointHighlightStroke: "rgba(151,187,205,1)",
                         data: <?php echo $przedwczoraj_piec->get(); ?>
+                    },
+                            {
+                        label: "Pomiar czujnik nr 3 zewnatrz",
+                        fillColor: " rgba(215, 44, 245, 0.4)",
+                        strokeColor: "rgba(215, 44, 245, 1)",
+                        pointColor: "rgba(215, 44, 245, 1);",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(151,187,205,1)",
+                        data: <?php echo $przedwczoraj_zewn->get(); ?>
                     }
                 ]
             }

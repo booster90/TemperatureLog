@@ -21,9 +21,9 @@
         $temp = new Temperature();
         
         //podejscie obiektowe uzywamy metod z klasy ktora napisalem
-        $sql_dzis = "SELECT * FROM sensor_1 WHERE data=date('now') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
-        $sql_dzis_zewn = "SELECT * FROM sensor_2 WHERE data=date('now') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
-        $sql_dzis_piec = "SELECT * FROM sensor_3 WHERE data=date('now') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
+        $sql_dzis = "SELECT * FROM sensor_1 WHERE data=date('now') AND godz BETWEEN time('05:00:00') AND time('24:00:10');";
+        $sql_dzis_zewn = "SELECT * FROM sensor_2 WHERE data=date('now') AND godz BETWEEN time('05:00:00') AND time('24:00:10');";
+        $sql_dzis_piec = "SELECT * FROM sensor_3 WHERE data=date('now') AND godz BETWEEN time('05:00:00') AND time('24:00:10');";
 
         //tworzymy dane pod wykres
         $dzis = new makeArrayJsChart( $temp->makeArraySurvey($sql_dzis) );
@@ -31,18 +31,18 @@
         $dzis_piec = new makeArrayJsChart($temp->makeArraySurvey($sql_dzis_piec));
         
         //z wczoraj
-        $sql_wczoraj = "SELECT * FROM sensor_1 WHERE data=date('now','-1 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
-        $sql_wczoraj_zewn = "SELECT * FROM sensor_2 WHERE data=date('now','-1 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
-        $sql_wczoraj_piec = "SELECT * FROM sensor_3 WHERE data=date('now','-1 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";        
+        $sql_wczoraj = "SELECT * FROM sensor_1 WHERE data=date('now','-1 day') AND godz BETWEEN time('05:00:00') AND time('24:00:10') OR data=date('now') AND godz<time('00:00:30');";
+        $sql_wczoraj_zewn = "SELECT * FROM sensor_2 WHERE data=date('now','-1 day') AND godz BETWEEN time('05:00:00') AND time('24:00:10') OR data=date('now') AND godz<time('00:00:30');";
+        $sql_wczoraj_piec = "SELECT * FROM sensor_3 WHERE data=date('now','-1 day') AND godz BETWEEN time('05:00:00') AND time('24:00:10') OR data=date('now') AND godz<time('00:00:30');";        
         
         $wczoraj = new makeArrayJsChart( $temp->makeArraySurvey($sql_wczoraj) );
         $wczoraj_zewn = new makeArrayJsChart($temp->makeArraySurvey($sql_wczoraj_zewn) );
         $wczoraj_piec = new makeArrayJsChart( $temp->makeArraySurvey($sql_wczoraj_piec) );
 
         //i przedwczoraj
-        $sql_przedWczoraj = "SELECT * FROM sensor_1 WHERE data=date('now','-2 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
-        $sql_przedWczoraj_zewn = "SELECT * FROM sensor_2 WHERE data=date('now','-2 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
-        $sql_przedWczoraj_piec = "SELECT * FROM sensor_3 WHERE data=date('now','-2 day') AND godz BETWEEN time('06:00:00') AND time('24:00:10');";
+        $sql_przedWczoraj = "SELECT * FROM sensor_1 WHERE data=date('now','-2 day') AND godz BETWEEN time('05:00:00') AND time('24:00:10') OR data=date('now','-1 day') AND godz<time('00:00:30');";
+        $sql_przedWczoraj_zewn = "SELECT * FROM sensor_2 WHERE data=date('now','-2 day') AND godz BETWEEN time('05:00:00') AND time('24:00:10') OR data=date('now','-1 day') AND godz<time('00:00:30');";
+        $sql_przedWczoraj_piec = "SELECT * FROM sensor_3 WHERE data=date('now','-2 day') AND godz BETWEEN time('05:00:00') AND time('24:00:10') OR data=date('now','-1 day') AND godz<time('00:00:30');";
         
         $przedwczoraj = new makeArrayJsChart( $temp->makeArraySurvey($sql_przedWczoraj) );
         $przedwczoraj_zewn = new makeArrayJsChart($temp->makeArraySurvey($sql_przedWczoraj_zewn));

@@ -28,61 +28,62 @@ class makeArrayJsChart {
                 if($value==NULL || $value==''|| $value==' '){
                     $value=1;
                 }
-                
-                if($key=='06'){
+                if($key=='05'){
                    $this->tempData[0]=$value; 
                 }
-                if($key=='07'){
-                    $this->tempData[1]=$value; 
+                if($key=='06'){
+                   $this->tempData[1]=$value; 
                 }
-                if($key=='08'){
+                if($key=='07'){
                     $this->tempData[2]=$value; 
                 }
-                if($key=='09'){
+                if($key=='08'){
                     $this->tempData[3]=$value; 
                 }
-                if($key=='10'){
+                if($key=='09'){
                     $this->tempData[4]=$value; 
                 }
-                if($key=='11'){
+                if($key=='10'){
                     $this->tempData[5]=$value; 
                 }
+                if($key=='11'){
+                    $this->tempData[6]=$value; 
+                }
                 if($key=='13'){
-                    $this->tempData[6]=$value;
+                    $this->tempData[7]=$value;
                 } 
                 if($key==14){
-                    $this->tempData[7]=$value; 
-                } 
-                if($key==15){
                     $this->tempData[8]=$value; 
                 } 
-                if($key==16){
+                if($key==15){
                     $this->tempData[9]=$value; 
-                }
-                if($key==17){
+                } 
+                if($key==16){
                     $this->tempData[10]=$value; 
                 }
+                if($key==17){
+                    $this->tempData[11]=$value; 
+                }
                 if($key=='18'){
-                    $this->tempData[11]=$value;
+                    $this->tempData[12]=$value;
                 }
                 if($key=='19'){
-                    $this->tempData[12]=$value; 
-                }
-                if($key=='20'){
                     $this->tempData[13]=$value; 
                 }
-                if($key=='21'){
+                if($key=='20'){
                     $this->tempData[14]=$value; 
                 }
-                if($key=='22'){
+                if($key=='21'){
                     $this->tempData[15]=$value; 
                 }
-                if($key=='23'){
+                if($key=='22'){
                     $this->tempData[16]=$value; 
                 }
-                if($key=='00'){
+                if($key=='23'){
                     $this->tempData[17]=$value; 
-                    //$dupa .= $value.',';  
+                }
+                if($key=='00'){
+                    $this->tempData[18]=$value;
                 }
             }
         }

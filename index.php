@@ -1,55 +1,141 @@
+<?php
+
+include "class/tempSQLite.class.php";
+include "class/makeArrayJsChart.php";
+include "class/pressureAir.class.php";
+    
+//nowy obiekt
+$pressure = new Pressure('pressure.db');
+$temp = new Temperature('temperature_sensor.db');
+
+//podejscie obiektowe uzywamy metod z klasy ktora napisalem
+$sql_dzis = "SELECT * FROM sensor_1 WHERE data=date('now') AND godz BETWEEN time('05:00:00') AND time('24:00:10');";
+$sql_dzis_zewn = "SELECT * FROM sensor_2 WHERE data=date('now') AND godz BETWEEN time('05:00:00') AND time('24:00:10');";
+$sql_dzis_piec = "SELECT * FROM sensor_3 WHERE data=date('now') AND godz BETWEEN time('05:00:00') AND time('24:00:10');";
+
+//tworzymy dane pod wykres
+$dzis = new makeArrayJsChart( $temp->makeArraySurvey($sql_dzis) );
+$dzis_zewn = new makeArrayJsChart($temp->makeArraySurvey($sql_dzis_zewn));
+$dzis_piec = new makeArrayJsChart($temp->makeArraySurvey($sql_dzis_piec));
+        
+//z wczoraj
+$sql_wczoraj = "SELECT * FROM sensor_1 WHERE data=date('now','-1 day') AND godz BETWEEN time('05:00:00') AND time('24:00:10') OR data=date('now') AND godz<time('00:00:30');";
+$sql_wczoraj_zewn = "SELECT * FROM sensor_2 WHERE data=date('now','-1 day') AND godz BETWEEN time('05:00:00') AND time('24:00:10') OR data=date('now') AND godz<time('00:00:30');";
+$sql_wczoraj_piec = "SELECT * FROM sensor_3 WHERE data=date('now','-1 day') AND godz BETWEEN time('05:00:00') AND time('24:00:10') OR data=date('now') AND godz<time('00:00:30');";        
+        
+$wczoraj = new makeArrayJsChart( $temp->makeArraySurvey($sql_wczoraj) );
+$wczoraj_zewn = new makeArrayJsChart($temp->makeArraySurvey($sql_wczoraj_zewn) );
+$wczoraj_piec = new makeArrayJsChart( $temp->makeArraySurvey($sql_wczoraj_piec) );
+
+//i przedwczoraj
+$sql_przedWczoraj = "SELECT * FROM sensor_1 WHERE data=date('now','-2 day') AND godz BETWEEN time('05:00:00') AND time('24:00:10') OR data=date('now','-1 day') AND godz<time('00:00:30');";
+$sql_przedWczoraj_zewn = "SELECT * FROM sensor_2 WHERE data=date('now','-2 day') AND godz BETWEEN time('05:00:00') AND time('24:00:10') OR data=date('now','-1 day') AND godz<time('00:00:30');";
+$sql_przedWczoraj_piec = "SELECT * FROM sensor_3 WHERE data=date('now','-2 day') AND godz BETWEEN time('05:00:00') AND time('24:00:10') OR data=date('now','-1 day') AND godz<time('00:00:30');";
+        
+$przedwczoraj = new makeArrayJsChart( $temp->makeArraySurvey($sql_przedWczoraj) );
+$przedwczoraj_zewn = new makeArrayJsChart($temp->makeArraySurvey($sql_przedWczoraj_zewn));
+$przedwczoraj_piec = new makeArrayJsChart( $temp->makeArraySurvey($sql_przedWczoraj_piec) );
+?>
+
 <!DOCTYPE html>
-<html lang="pl"> 
-    <head>
-        <title>Witaj na mojej domowej stronie</title>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="" content="">
+    <meta name="krystianm" content="pomiar temperatury raspberry pi">
+    <link rel="icon" href="favicon.ico">
 
-        <meta charset="utf-8">
-        <meta name="description" content="">
-        <meta name="author" content="booster" >
-        <!-- określenie szerokości ekranu i skali -->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-        <link rel="Stylesheet" href="css/styl.css" type="text/css" />
+    <title>Pi Pomiar</title>
 
-        <!-- lib chart-->
-        <script src="/libs/Chart.js/Chart.js"></script>
+    <!-- Bootstrap core CSS -->
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!--font awesome icons -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
-        <?php 
-        //dla sqlite
-        include "class/tempSQLite.class.php";
-        include "class/makeArrayJsChart.php";
-        
-        $temp = new Temperature();
-        
-        //podejscie obiektowe uzywamy metod z klasy ktora napisalem
-        $sql_dzis = "SELECT * FROM sensor_1 WHERE data=date('now') AND godz BETWEEN time('05:00:00') AND time('24:00:10');";
-        $sql_dzis_zewn = "SELECT * FROM sensor_2 WHERE data=date('now') AND godz BETWEEN time('05:00:00') AND time('24:00:10');";
-        $sql_dzis_piec = "SELECT * FROM sensor_3 WHERE data=date('now') AND godz BETWEEN time('05:00:00') AND time('24:00:10');";
+    <!-- Custom styles for this template -->
+    <link href="css/pi_pomiar.css" rel="stylesheet">
+    
+    <!-- lib chart-->
+    <script src="/libs/Chart.js/Chart.js"></script>
 
-        //tworzymy dane pod wykres
-        $dzis = new makeArrayJsChart( $temp->makeArraySurvey($sql_dzis) );
-        $dzis_zewn = new makeArrayJsChart($temp->makeArraySurvey($sql_dzis_zewn));
-        $dzis_piec = new makeArrayJsChart($temp->makeArraySurvey($sql_dzis_piec));
-        
-        //z wczoraj
-        $sql_wczoraj = "SELECT * FROM sensor_1 WHERE data=date('now','-1 day') AND godz BETWEEN time('05:00:00') AND time('24:00:10') OR data=date('now') AND godz<time('00:00:30');";
-        $sql_wczoraj_zewn = "SELECT * FROM sensor_2 WHERE data=date('now','-1 day') AND godz BETWEEN time('05:00:00') AND time('24:00:10') OR data=date('now') AND godz<time('00:00:30');";
-        $sql_wczoraj_piec = "SELECT * FROM sensor_3 WHERE data=date('now','-1 day') AND godz BETWEEN time('05:00:00') AND time('24:00:10') OR data=date('now') AND godz<time('00:00:30');";        
-        
-        $wczoraj = new makeArrayJsChart( $temp->makeArraySurvey($sql_wczoraj) );
-        $wczoraj_zewn = new makeArrayJsChart($temp->makeArraySurvey($sql_wczoraj_zewn) );
-        $wczoraj_piec = new makeArrayJsChart( $temp->makeArraySurvey($sql_wczoraj_piec) );
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="assets/js/ie-emulation-modes-warning.js"></script>
 
-        //i przedwczoraj
-        $sql_przedWczoraj = "SELECT * FROM sensor_1 WHERE data=date('now','-2 day') AND godz BETWEEN time('05:00:00') AND time('24:00:10') OR data=date('now','-1 day') AND godz<time('00:00:30');";
-        $sql_przedWczoraj_zewn = "SELECT * FROM sensor_2 WHERE data=date('now','-2 day') AND godz BETWEEN time('05:00:00') AND time('24:00:10') OR data=date('now','-1 day') AND godz<time('00:00:30');";
-        $sql_przedWczoraj_piec = "SELECT * FROM sensor_3 WHERE data=date('now','-2 day') AND godz BETWEEN time('05:00:00') AND time('24:00:10') OR data=date('now','-1 day') AND godz<time('00:00:30');";
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">PI Pomiar</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="https://malina/">Home</a></li>
+            <li><a href="https://malina.dev/">Pomiar dev</a></li>
+            <li><a href="https://www.google.pl/#q=pogoda+ostrow+wlkp">Prognoza pogody</a></li>
+            <li><a href="http://new.meteo.pl/um/php/meteorogram_id_um.php?ntype=0u&id=2569">Prognoza pogody(meteo.pl)</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+      
+    <div class="starter-template">
+        <h1>Temperatura i ciśnienie</h1>
+        <hr class="featurette-divider">
         
-        $przedwczoraj = new makeArrayJsChart( $temp->makeArraySurvey($sql_przedWczoraj) );
-        $przedwczoraj_zewn = new makeArrayJsChart($temp->makeArraySurvey($sql_przedWczoraj_zewn));
-        $przedwczoraj_piec = new makeArrayJsChart( $temp->makeArraySurvey($sql_przedWczoraj_piec) );
-        ?>
+        <p class="lead"><?php echo ' '.$pressure->getLastSurvey(); ?></p>
+        <p class="lead"><i class="fa fa-home"></i><?php echo ' '.$temp->getLastSurvey_inside(); ?></p>
+        <p class="lead"><?php echo $temp->getLastSurvey_heater(); ?></p>
+        <p class="lead"><?php echo $temp->getLastSurvey_outside(); ?></p>
         
-        <!-- skrypt JS-->
+        <h1>Dziś</h1>
+        <p class="lead"><canvas id="wykresDzis" width="600" height="100"></canvas></p>
+        
+        <h1>Wczoraj</h1>
+        <div class="center">
+            <canvas id="wykresWczoraj" width="600" height="100"></canvas>
+        </div>
+        
+        <h1>Przedwczoraj</h1>
+        <div class="center">
+            <canvas id="wykresPrzedWczoraj" width="600" height="100"></canvas>
+        </div>
+        
+        <hr>
+    </div>
+        
+    </div><!-- /.container -->
+     <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
+    
+    <!-- skrypt JS-->
         <script type="text/javascript">    
             //kolejne wykresy w chart.js
             var lineChartData = {
@@ -162,7 +248,7 @@
                     }
                 ]
             }
-
+            
             window.onload = function () {
                 var wykres_dzis = document.getElementById("wykresDzis").getContext("2d");
                 var wykres_wczoraj = document.getElementById("wykresWczoraj").getContext("2d");
@@ -171,7 +257,6 @@
                 window.myLine = new Chart(wykres_dzis).Line(lineChartData, {
                     responsive: true
                 });
-                
                 window.myLine = new Chart(wykres_wczoraj).Line(lineChartData_wczoraj, {
                     responsive: true
                 });
@@ -180,36 +265,6 @@
                 });
               
             }
-
-        </script>	
-
-    </head>
-    <body>		
-        <header>
-            Witaj moim domowym serwerze
-        </header>
-
-        <nav> 
-            <?php include "../include/nav.php" ?>
-        </nav>
-
-        <div id="zawartosc"></div>
-        <p class='center'><?php echo $temp->getLastSurvey(); echo "przy średniej temperaturze dziś ".substr($temp->getAvgToday(),0,5)." &deg;C oraz globalnej ".substr($temp->getAvg(),0,5)." &deg;C</p>"; ?>
-        <div class="center">
-            <canvas id="wykresDzis" width="600" height="200"></canvas>
-        </div>
-        
-        <?php echo "<p class='center'>Pomiar wczoraj</p>"; ?>
-        <div class="center">
-            <canvas id="wykresWczoraj" width="600" height="200"></canvas>
-        </div>
-        
-        <?php echo "<p class='center'>Pomiar z przed wczoraj</p>"; ?>
-        <div class="center">
-            <canvas id="wykresPrzedWczoraj" width="600" height="200"></canvas>
-        </div>
-        <footer>
-            <?php include "../include/footer.php";?>
-        </footer>
-    </body>
+        </script>
+  </body>
 </html>

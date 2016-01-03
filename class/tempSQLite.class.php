@@ -22,8 +22,9 @@ class Temperature extends SQLite3 {
      *      *mozna dodac obsluge bledow,
      *      *..   
      */
-    function __construct() {
-        $this->open('temperature_sensor.db');
+    //
+    function __construct($path) {
+        $this->open($path);
     }
 
     /**
@@ -50,7 +51,7 @@ class Temperature extends SQLite3 {
 
     /**
      * 
-     * Wyswietla ostatni pomiar.
+     * Wyswietla ostatni pomiar temperatury w domu.
      * 
      * @return type string
      */
@@ -63,7 +64,61 @@ class Temperature extends SQLite3 {
             $this->czas = $row['godz'];
             $this->temp = $row['temp'];
         }
-        return 'Ostatni pomiar wynosił: ' . $this->temp . ' &deg;C data: ' . $this->data . ' o godzinie ' . $this->czas . ' ';
+        return 'Temperatura: ' . $this->temp . ' &deg;C ( ' . $this->data . ' ' . $this->czas . ' )';
+    }
+    
+    /**
+     * 
+     * Wyswietla ostatni pomiar temperatury w domu.
+     * 
+     * @return type string
+     */
+    function getLastSurvey_inside() {
+        $sql = 'SELECT * FROM sensor_1 ORDER BY id DESC LIMIT 1';
+        
+        $obj = $this->query($sql);
+        while ($row = $obj->fetchArray(SQLITE3_ASSOC)) {
+            $this->data = $row['data'];
+            $this->czas = $row['godz'];
+            $this->temp = $row['temp'];
+        }
+        return 'Temperatura: ' . $this->temp . ' &deg;C ( ' . $this->data . ' ' . $this->czas . ' )';
+    }
+    
+    /**
+     * 
+     * Wyswietla ostatni pomiar z CO.
+     * 
+     * @return type string
+     */
+    function getLastSurvey_heater() {
+        $sql = 'SELECT * FROM sensor_2 ORDER BY id DESC LIMIT 1';
+        
+        $obj = $this->query($sql);
+        while ($row = $obj->fetchArray(SQLITE3_ASSOC)) {
+            $this->data = $row['data'];
+            $this->czas = $row['godz'];
+            $this->temp = $row['temp'];
+        }
+        return 'Temperatura: ' . $this->temp . ' &deg;C ( ' . $this->data . ' ' . $this->czas . ' )';
+    }
+    
+    /**
+     * 
+     * Wyswietla ostatni pomiar z zewnatrz.
+     * 
+     * @return type string
+     */
+    function getLastSurvey_outside() {
+        $sql = 'SELECT * FROM sensor_3 ORDER BY id DESC LIMIT 1';
+        
+        $obj = $this->query($sql);
+        while ($row = $obj->fetchArray(SQLITE3_ASSOC)) {
+            $this->data = $row['data'];
+            $this->czas = $row['godz'];
+            $this->temp = $row['temp'];
+        }
+        return 'Temperatura: ' . $this->temp . ' &deg;C ( ' . $this->data . ' ' . $this->czas . ' )';
     }
     
      /**
